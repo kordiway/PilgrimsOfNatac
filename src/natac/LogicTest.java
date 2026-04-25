@@ -8,6 +8,7 @@ import java.awt.Color;
  * @author Korbin Ordiway
  */
 public class LogicTest {
+	
 
 	public static void main(String[] args) {
 		System.out.println("=== PILGRIMS OF NATAC - BOARD TEST ===\n");
