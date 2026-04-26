@@ -15,10 +15,10 @@ public class Player {
 	private String name;
 	private Color color;
 	private int vp;
-	private int cannonsFired;
+	private int cannonsFired; // not implemented
 	private int longestRoad;
-	private boolean hasCaravan;
-	private boolean oasisBonus;
+	private boolean hasCaravan; // not implemented
+	private boolean oasisBonus; // not implemented
 	private ST<ResourceType, Integer> resources;
 
 	public Player(String name, Color color) {

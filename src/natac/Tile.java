@@ -10,7 +10,7 @@ public class Tile {
 
 	private ResourceType type;
 	private int numberToken;
-	private int plagueRoundLeft;
+	private int plagueRoundLeft; // not implemented
 
 	public Tile(ResourceType type, int numberToken) {
 		this.type = type;

@@ -57,15 +57,22 @@ public class Board {
 			}
 		}
 	}
-
+	/**
+	 * Creates all 54 Crossroads objects and populates the crossroads array.
+	 * Each crossroads starts empty with no structure or owner.
+	 */
 	private void buildCrossroads() {
 		for (int i = 0; i < 54; i++) {
 			crossroads[i] = new Crossroads();
 		}
 	}
-
+	
+	/**
+	 * builds the graph with proper connections to allow for player placements and 
+	 * clickable vertexes to be made
+	 */
 	private void buildGraph() {
-		graph = new Graph(new In("src/natac/resources/graph.txt"));
+		graph = new Graph(new In(getClass().getResource("/natac/resources/graph.txt")));
 	}
 
 	/**
@@ -288,6 +295,13 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * checks rules for initial settlement placement since they differ from build settlement 
+	 * requirements
+	 * 
+	 * @param ind
+	 * @return
+	 */
 	public boolean isInitialSettlementValid(int ind) {
 	    if (!crossroads[ind].isEmpty()) return false;
 	    for (int adj : graph.adj(ind)) {
@@ -296,6 +310,13 @@ public class Board {
 	    return true;
 	}
 
+	/**
+	 * checks adjacency to see if placements of structures is valid or not
+	 * 
+	 * @param v
+	 * @param w
+	 * @return true if adjacent false if not
+	 */
 	public boolean areAdjacent(int v, int w) {
 	    for (int adj : graph.adj(v)) {
 	        if (adj == w) return true;
@@ -303,6 +324,13 @@ public class Board {
 	    return false;
 	}
 	
+	/**
+	 * checks placement of second initial settlement and gives
+	 * resources of tiles it is on crossroads of to players.
+	 * 
+	 * @param crossroadIndex
+	 * @param player
+	 */
 	public void giveStartingResources(int crossroadIndex, Player player) {
 	    for (int t = 0; t < 19; t++) {
 	        for (int c : tileCrossroads[t]) {

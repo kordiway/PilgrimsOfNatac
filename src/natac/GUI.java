@@ -4,6 +4,14 @@ import java.awt.Color;
 
 import edu.princeton.cs.algs4.StdDraw;
 
+/**
+ * Graphical interface to actually run the game using std draw from algs4 as well
+ * as handling mouse click interactions to cycle between multiple different game states
+ * and screens allowing for a clean user experience.
+ * 
+ * @author Korbin Ordiway
+ */
+
 public class GUI {
 
 	private ResourceType bankGive = null;
@@ -22,13 +30,10 @@ public class GUI {
 	private boolean hasRolled = false;
 	private Buildable selectedBuild = null;
 	private int firstRoadVertex = -1;
-	private double[][] tileCenters = {
-		{ 0.2761, 0.7100 }, { 0.3800, 0.7100 }, { 0.4839, 0.7100 },
-		{ 0.2241, 0.6200 }, { 0.3280, 0.6200 }, { 0.4320, 0.6200 }, { 0.5359, 0.6200 },
-		{ 0.1722, 0.5300 }, { 0.2761, 0.5300 }, { 0.3800, 0.5300 }, { 0.4839, 0.5300 }, { 0.5878, 0.5300 },
-		{ 0.2241, 0.4400 }, { 0.3280, 0.4400 }, { 0.4320, 0.4400 }, { 0.5359, 0.4400 },
-		{ 0.2761, 0.3500 }, { 0.3800, 0.3500 }, { 0.4839, 0.3500 }
-	};
+	private double[][] tileCenters = { { 0.2761, 0.7100 }, { 0.3800, 0.7100 }, { 0.4839, 0.7100 }, { 0.2241, 0.6200 },
+			{ 0.3280, 0.6200 }, { 0.4320, 0.6200 }, { 0.5359, 0.6200 }, { 0.1722, 0.5300 }, { 0.2761, 0.5300 },
+			{ 0.3800, 0.5300 }, { 0.4839, 0.5300 }, { 0.5878, 0.5300 }, { 0.2241, 0.4400 }, { 0.3280, 0.4400 },
+			{ 0.4320, 0.4400 }, { 0.5359, 0.4400 }, { 0.2761, 0.3500 }, { 0.3800, 0.3500 }, { 0.4839, 0.3500 } };
 
 	public GUI() {
 		this.playerCount = 0;
@@ -43,17 +48,20 @@ public class GUI {
 		initCoords();
 	}
 
+	/**
+	 * initializes the coordinates for each vertex for the hexagonal board
+	 */
 	private void initCoords() {
-		coords[0]  = new double[] { 0.2761, 0.7700 };
-		coords[1]  = new double[] { 0.3800, 0.7700 };
-		coords[2]  = new double[] { 0.4839, 0.7700 };
-		coords[3]  = new double[] { 0.2241, 0.7400 };
-		coords[4]  = new double[] { 0.3280, 0.7400 };
-		coords[5]  = new double[] { 0.4320, 0.7400 };
-		coords[6]  = new double[] { 0.5359, 0.7400 };
-		coords[7]  = new double[] { 0.2241, 0.6800 };
-		coords[8]  = new double[] { 0.3280, 0.6800 };
-		coords[9]  = new double[] { 0.4320, 0.6800 };
+		coords[0] = new double[] { 0.2761, 0.7700 };
+		coords[1] = new double[] { 0.3800, 0.7700 };
+		coords[2] = new double[] { 0.4839, 0.7700 };
+		coords[3] = new double[] { 0.2241, 0.7400 };
+		coords[4] = new double[] { 0.3280, 0.7400 };
+		coords[5] = new double[] { 0.4320, 0.7400 };
+		coords[6] = new double[] { 0.5359, 0.7400 };
+		coords[7] = new double[] { 0.2241, 0.6800 };
+		coords[8] = new double[] { 0.3280, 0.6800 };
+		coords[9] = new double[] { 0.4320, 0.6800 };
 		coords[10] = new double[] { 0.5359, 0.6800 };
 		coords[11] = new double[] { 0.1722, 0.6500 };
 		coords[12] = new double[] { 0.2761, 0.6500 };
@@ -100,6 +108,10 @@ public class GUI {
 		coords[53] = new double[] { 0.4839, 0.2900 };
 	}
 
+	/**
+	 * uses a switch case statement to handle what gamestate we are currently in to allow for 
+	 * easy transitions from screen to screen cleanly including going back if player chooses to
+	 */
 	public void run() {
 		boolean redraw = true;
 		while (true) {
@@ -136,11 +148,11 @@ public class GUI {
 					displayWinScreen(engine.checkWin());
 					break;
 				case BANK_TRADE:
-				    displayBankTrade();
-				    break;
+					displayBankTrade();
+					break;
 				case RULES:
-				    displayRules();
-				    break;
+					displayRules();
+					break;
 				default:
 					break;
 				}
@@ -161,6 +173,11 @@ public class GUI {
 		}
 	}
 
+	/**
+	 * draws the main menu screen with a title along with 3 options
+	 * play to enter setup rules if unfamiliar it shows a simple instruction on how to play
+	 * and exit to close the app
+	 */
 	private void displayMainMenu() {
 		StdDraw.setPenColor(StdDraw.BLACK);
 		StdDraw.text(0.75, 0.80, "Pilgrims of NataC");
@@ -184,53 +201,61 @@ public class GUI {
 		StdDraw.rectangle(0.75, 0.35, 0.10, 0.04);
 		StdDraw.text(0.75, 0.35, "Exit");
 	}
-	private void displayRules() {
-	    StdDraw.setPenColor(StdDraw.BLACK);
-	    StdDraw.text(0.75, 0.92, "Pilgrims of NataC - Rules");
-	    
-	    double y = 0.85;
-	    double step = 0.04;
-	    
-	    StdDraw.text(0.75, y, "OBJECTIVE: First player to reach the Victory Point goal wins.");
-	    y -= step * 1.5;
-	    
-	    StdDraw.text(0.75, y, "SETUP:");
-	    y -= step;
-	    StdDraw.text(0.75, y, "Each player places 2 settlements and 2 roads in snake order.");
-	    y -= step;
-	    StdDraw.text(0.75, y, "Second settlement gives starting resources from adjacent tiles.");
-	    y -= step * 1.5;
-	    
-	    StdDraw.text(0.75, y, "TURN ORDER:");
-	    y -= step;
-	    StdDraw.text(0.75, y, "1. Roll the dice (resources distribute to matching tile numbers)");
-	    y -= step;
-	    StdDraw.text(0.75, y, "2. Build any structures you can afford");
-	    y -= step;
-	    StdDraw.text(0.75, y, "3. Trade 4:1 with the bank if needed");
-	    y -= step;
-	    StdDraw.text(0.75, y, "4. End turn");
-	    y -= step * 1.5;
-	    
-	    StdDraw.text(0.75, y, "BUILD COSTS:");
-	    y -= step;
-	    StdDraw.text(0.75, y, "Road: 1 Wood + 1 Brick");
-	    y -= step;
-	    StdDraw.text(0.75, y, "Settlement: 1 Wood + 1 Brick + 1 Wheat + 1 Sheep (worth 1 VP)");
-	    y -= step;
-	    StdDraw.text(0.75, y, "City: 2 Wheat + 3 Ore (upgrades settlement, worth 2 VP)");
-	    y -= step * 1.5;
-	    
-	    StdDraw.text(0.75, y, "SPECIAL: Longest Road bonus (5+ roads) = 2 VP");
 
-	    
-	    StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-	    StdDraw.filledRectangle(0.10, 0.10, 0.08, 0.04);
-	    StdDraw.setPenColor(StdDraw.BLACK);
-	    StdDraw.rectangle(0.10, 0.10, 0.08, 0.04);
-	    StdDraw.text(0.10, 0.10, "Back");
+	/**
+	 * prints rules on screen as simple text 
+	 */
+	private void displayRules() {
+		StdDraw.setPenColor(StdDraw.BLACK);
+		StdDraw.text(0.75, 0.92, "Pilgrims of NataC - Rules");
+
+		double y = 0.85;
+		double step = 0.04;
+
+		StdDraw.text(0.75, y, "OBJECTIVE: First player to reach the Victory Point goal wins.");
+		y -= step * 1.5;
+
+		StdDraw.text(0.75, y, "SETUP:");
+		y -= step;
+		StdDraw.text(0.75, y, "Each player places 2 settlements and 2 roads in snake order.");
+		y -= step;
+		StdDraw.text(0.75, y, "Second settlement gives starting resources from adjacent tiles.");
+		y -= step * 1.5;
+
+		StdDraw.text(0.75, y, "TURN ORDER:");
+		y -= step;
+		StdDraw.text(0.75, y, "1. Roll the dice (resources distribute to matching tile numbers)");
+		y -= step;
+		StdDraw.text(0.75, y, "2. Build any structures you can afford");
+		y -= step;
+		StdDraw.text(0.75, y, "3. Trade 4:1 with the bank if needed");
+		y -= step;
+		StdDraw.text(0.75, y, "4. End turn");
+		y -= step * 1.5;
+
+		StdDraw.text(0.75, y, "BUILD COSTS:");
+		y -= step;
+		StdDraw.text(0.75, y, "Road: 1 Wood + 1 Brick");
+		y -= step;
+		StdDraw.text(0.75, y, "Settlement: 1 Wood + 1 Brick + 1 Wheat + 1 Sheep (worth 1 VP)");
+		y -= step;
+		StdDraw.text(0.75, y, "City: 2 Wheat + 3 Ore (upgrades settlement, worth 2 VP)");
+		y -= step * 1.5;
+
+		StdDraw.text(0.75, y, "SPECIAL: Longest Road bonus (5+ roads) = 2 VP");
+
+		StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+		StdDraw.filledRectangle(0.10, 0.10, 0.08, 0.04);
+		StdDraw.setPenColor(StdDraw.BLACK);
+		StdDraw.rectangle(0.10, 0.10, 0.08, 0.04);
+		StdDraw.text(0.10, 0.10, "Back");
 	}
 
+	/**
+	 * displays the initial setup screen that asks how many players you would like to play with
+	 * having options 2-4 as individual squares that send you to the next screen along
+	 * with also having a back button to return to main menu if desired
+	 */
 	private void displaySetupPlayers() {
 		StdDraw.setPenColor(StdDraw.BLACK);
 		StdDraw.text(0.75, 0.85, "Setup");
@@ -261,6 +286,11 @@ public class GUI {
 		StdDraw.text(0.10, 0.10, "Back");
 	}
 
+	/**
+	 * displays victory point setup screen along with back button and start button
+	 * when vp is set to desired goal. there is an up and down arrow allowing you to change
+	 * it as long as its between 3-10
+	 */
 	private void displaySetupVP() {
 		StdDraw.setPenColor(StdDraw.BLACK);
 		StdDraw.text(0.75, 0.85, "Setup");
@@ -295,6 +325,10 @@ public class GUI {
 		StdDraw.text(1.40, 0.10, "Start");
 	}
 
+	/**
+	 * displays the initial board to start initial placement phase
+	 * allowing each player to set up 2 roads and 2 settlements in snake order
+	 */
 	private void displayInitialPlacement() {
 		displayBoard();
 		displayPlayerCards();
@@ -316,6 +350,12 @@ public class GUI {
 		}
 	}
 
+	/**
+	 * displays game board with tile colors representing resources and 
+	 * and number token in the center representing when players recieve
+	 * resources from the tile along with each vertex being a white 
+	 * circle for clarity on selectable spots
+	 */
 	private void displayBoard() {
 		for (int i = 0; i < 19; i++) {
 			Tile t = board.tileAt(i);
@@ -327,12 +367,23 @@ public class GUI {
 				tileColor = StdDraw.AQUA;
 			} else {
 				switch (t.getType()) {
-				case WOOD:  tileColor = StdDraw.GREEN; break;
-				case SHEEP: tileColor = StdDraw.LIME; break;
-				case WHEAT: tileColor = StdDraw.YELLOW; break;
-				case BRICK: tileColor = StdDraw.MAROON; break;
-				case ORE:   tileColor = StdDraw.GRAY; break;
-				default:    tileColor = StdDraw.WHITE;
+				case WOOD:
+					tileColor = StdDraw.GREEN;
+					break;
+				case SHEEP:
+					tileColor = StdDraw.LIME;
+					break;
+				case WHEAT:
+					tileColor = StdDraw.YELLOW;
+					break;
+				case BRICK:
+					tileColor = StdDraw.MAROON;
+					break;
+				case ORE:
+					tileColor = StdDraw.GRAY;
+					break;
+				default:
+					tileColor = StdDraw.WHITE;
 				}
 			}
 
@@ -398,6 +449,11 @@ public class GUI {
 		}
 	}
 
+	/**
+	 * draws player cards along top of window centered based on 4 players
+	 * no matter the player count showing player colors and number along with
+	 * total vp and resources
+	 */
 	private void displayPlayerCards() {
 		double cardWidth = 0.30;
 		double cardHeight = 0.08;
@@ -413,13 +469,13 @@ public class GUI {
 
 			if (engine != null && p == engine.getCurrentPlayer()) {
 				StdDraw.setPenColor(StdDraw.YELLOW);
-				StdDraw.filledRectangle(cx, y, cardWidth/2 + 0.005, cardHeight/2 + 0.005);
+				StdDraw.filledRectangle(cx, y, cardWidth / 2 + 0.005, cardHeight / 2 + 0.005);
 			}
 
 			StdDraw.setPenColor(StdDraw.WHITE);
-			StdDraw.filledRectangle(cx, y, cardWidth/2, cardHeight/2);
+			StdDraw.filledRectangle(cx, y, cardWidth / 2, cardHeight / 2);
 			StdDraw.setPenColor(StdDraw.BLACK);
-			StdDraw.rectangle(cx, y, cardWidth/2, cardHeight/2);
+			StdDraw.rectangle(cx, y, cardWidth / 2, cardHeight / 2);
 
 			StdDraw.text(cx - 0.10, y + 0.02, "Player" + (i + 1));
 			StdDraw.setPenColor(p.getColor());
@@ -432,6 +488,10 @@ public class GUI {
 		}
 	}
 
+	/**
+	 * during the current players turn it displays the resources
+	 * they currently have on screen
+	 */
 	private void displayResourcePanel() {
 		Player current = engine.getCurrentPlayer();
 		double x = 0.85;
@@ -447,6 +507,11 @@ public class GUI {
 		StdDraw.text(x, yStart - yStep * 4, "Ore: " + current.getResource(ResourceType.ORE));
 	}
 
+	/**
+	 * displays 4 action buttons on screen roll, end turn, 4:1, and build
+	 * theese are locked aside from roll and 4:1 until the current player has
+	 * rolled as well as only being able to roll once per turn.
+	 */
 	private void displayActionButtons() {
 		StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
 		StdDraw.filledRectangle(0.10, 0.22, 0.06, 0.03);
@@ -483,6 +548,11 @@ public class GUI {
 		}
 	}
 
+	/**
+	 * displays build menu that shows buildables and price
+	 * when clicked the current players hand is checked if they
+	 * can afford and a status message appears if not
+	 */
 	private void displayBuildMenu() {
 		StdDraw.setPenColor(StdDraw.WHITE);
 		StdDraw.filledRectangle(0.75, 0.50, 0.20, 0.18);
@@ -515,6 +585,12 @@ public class GUI {
 		StdDraw.text(0.75, 0.40, "Cancel");
 	}
 
+	/**
+	 * Displays the winner along with a gameover message and 2 buttons to choose
+	 * either new game which returns to main menu or exit to close the app
+	 * 
+	 * @param winner
+	 */
 	private void displayWinScreen(Player winner) {
 		StdDraw.setPenColor(StdDraw.BLACK);
 		StdDraw.text(0.75, 0.70, "GAME OVER");
@@ -540,65 +616,88 @@ public class GUI {
 		StdDraw.text(0.75, 0.17, "Exit");
 	}
 
+	/**
+	 * given the x and y coordinates of where the mouse clicked it checks if it
+	 * was a valid crossroad spot returning the index or returning -1 if not found
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	private int findClickedCrossroad(double x, double y) {
 		for (int i = 0; i < 54; i++) {
 			double dx = x - coords[i][0];
 			double dy = y - coords[i][1];
-			if (dx * dx + dy * dy < 0.0003) return i;
+			if (dx * dx + dy * dy < 0.0003)
+				return i;
 		}
 		return -1;
 	}
+
+	/**
+	 * display the bank trade menu allowing you to select the resource you'd give
+	 * 4 of and the one you'd recieve with a send button or cancel button 
+	 * if the player has selected an invalid trade will return status message.
+	 */
 	private void displayBankTrade() {
-	    StdDraw.setPenColor(StdDraw.BLACK);
-	    StdDraw.text(0.75, 0.85, "Bank Trade 4:1");
-	    StdDraw.text(0.40, 0.75, "GIVE (4 of):");
-	    StdDraw.text(1.10, 0.75, "RECEIVE (1 of):");
+		StdDraw.setPenColor(StdDraw.BLACK);
+		StdDraw.text(0.75, 0.85, "Bank Trade 4:1");
+		StdDraw.text(0.40, 0.75, "GIVE (4 of):");
+		StdDraw.text(1.10, 0.75, "RECEIVE (1 of):");
 
-	    Player current = engine.getCurrentPlayer();
-	    ResourceType[] types = ResourceType.values();
-	    
-	    for (int i = 0; i < types.length; i++) {
-	        double y = 0.65 - (i * 0.07);
-	        
-	        if (bankGive == types[i]) {
-	            StdDraw.setPenColor(StdDraw.YELLOW);
-	        } else {
-	            StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-	        }
-	        StdDraw.filledRectangle(0.40, y, 0.12, 0.025);
-	        StdDraw.setPenColor(StdDraw.BLACK);
-	        StdDraw.rectangle(0.40, y, 0.12, 0.025);
-	        StdDraw.text(0.40, y, types[i] + " (" + current.getResource(types[i]) + ")");
-	        
-	        if (bankReceive == types[i]) {
-	            StdDraw.setPenColor(StdDraw.YELLOW);
-	        } else {
-	            StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-	        }
-	        StdDraw.filledRectangle(1.10, y, 0.12, 0.025);
-	        StdDraw.setPenColor(StdDraw.BLACK);
-	        StdDraw.rectangle(1.10, y, 0.12, 0.025);
-	        StdDraw.text(1.10, y, types[i].toString());
-	    }
+		Player current = engine.getCurrentPlayer();
+		ResourceType[] types = ResourceType.values();
 
-	    StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-	    StdDraw.filledRectangle(0.10, 0.10, 0.08, 0.04);
-	    StdDraw.setPenColor(StdDraw.BLACK);
-	    StdDraw.rectangle(0.10, 0.10, 0.08, 0.04);
-	    StdDraw.text(0.10, 0.10, "Cancel");
+		for (int i = 0; i < types.length; i++) {
+			double y = 0.65 - (i * 0.07);
 
-	    StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-	    StdDraw.filledRectangle(1.40, 0.10, 0.08, 0.04);
-	    StdDraw.setPenColor(StdDraw.BLACK);
-	    StdDraw.rectangle(1.40, 0.10, 0.08, 0.04);
-	    StdDraw.text(1.40, 0.10, "Send");
+			if (bankGive == types[i]) {
+				StdDraw.setPenColor(StdDraw.YELLOW);
+			} else {
+				StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+			}
+			StdDraw.filledRectangle(0.40, y, 0.12, 0.025);
+			StdDraw.setPenColor(StdDraw.BLACK);
+			StdDraw.rectangle(0.40, y, 0.12, 0.025);
+			StdDraw.text(0.40, y, types[i] + " (" + current.getResource(types[i]) + ")");
 
-	    if (!statusMessage.isEmpty()) {
-	        StdDraw.setPenColor(StdDraw.RED);
-	        StdDraw.text(0.75, 0.18, statusMessage);
-	    }
+			if (bankReceive == types[i]) {
+				StdDraw.setPenColor(StdDraw.YELLOW);
+			} else {
+				StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+			}
+			StdDraw.filledRectangle(1.10, y, 0.12, 0.025);
+			StdDraw.setPenColor(StdDraw.BLACK);
+			StdDraw.rectangle(1.10, y, 0.12, 0.025);
+			StdDraw.text(1.10, y, types[i].toString());
+		}
+
+		StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+		StdDraw.filledRectangle(0.10, 0.10, 0.08, 0.04);
+		StdDraw.setPenColor(StdDraw.BLACK);
+		StdDraw.rectangle(0.10, 0.10, 0.08, 0.04);
+		StdDraw.text(0.10, 0.10, "Cancel");
+
+		StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+		StdDraw.filledRectangle(1.40, 0.10, 0.08, 0.04);
+		StdDraw.setPenColor(StdDraw.BLACK);
+		StdDraw.rectangle(1.40, 0.10, 0.08, 0.04);
+		StdDraw.text(1.40, 0.10, "Send");
+
+		if (!statusMessage.isEmpty()) {
+			StdDraw.setPenColor(StdDraw.RED);
+			StdDraw.text(0.75, 0.18, statusMessage);
+		}
 	}
 
+	/**
+	 * given x and y coordinates of a click it will check if the coordinates are on a button
+	 * depending on game state and then will execute desired function based on button/spot clicked
+	 * or show status message if invalid during actual gameplay.  
+	 * 
+	 * @param x
+	 * @param y
+	 */
 	private void handleClick(double x, double y) {
 		if (state == GameState.MAIN_MENU) {
 			if (x > 0.65 && x < 0.85 && y > 0.51 && y < 0.59) {
@@ -623,9 +722,11 @@ public class GUI {
 			}
 		} else if (state == GameState.SETUP_VP) {
 			if (x > 0.71 && x < 0.79 && y > 0.57 && y < 0.63) {
-				if (vpGoal < 10) vpGoal++;
+				if (vpGoal < 10)
+					vpGoal++;
 			} else if (x > 0.71 && x < 0.79 && y > 0.41 && y < 0.47) {
-				if (vpGoal > 3) vpGoal--;
+				if (vpGoal > 3)
+					vpGoal--;
 			} else if (x > 0.02 && x < 0.18 && y > 0.06 && y < 0.14) {
 				state = GameState.SETUP_PLAYERS;
 			} else if (x > 1.32 && x < 1.48 && y > 0.06 && y < 0.14) {
@@ -669,10 +770,12 @@ public class GUI {
 						return;
 					}
 				}
-				if (!foundClick) statusMessage = "Click on a valid intersection";
+				if (!foundClick)
+					statusMessage = "Click on a valid intersection";
 			} else {
 				for (int i = 0; i < 54; i++) {
-					if (i == lastSettlementIndex) continue;
+					if (i == lastSettlementIndex)
+						continue;
 					double dx = x - coords[i][0];
 					double dy = y - coords[i][1];
 					if (dx * dx + dy * dy < 0.0003) {
@@ -700,7 +803,8 @@ public class GUI {
 						return;
 					}
 				}
-				if (!foundClick) statusMessage = "Click on a valid road endpoint";
+				if (!foundClick)
+					statusMessage = "Click on a valid road endpoint";
 			}
 		} else if (state == GameState.MAIN_GAME) {
 			if (selectedBuild != null) {
@@ -711,7 +815,8 @@ public class GUI {
 						if (board.crossroadsAt(clicked).hasSettlement()) {
 							statusMessage = "Settlement built";
 							selectedBuild = null;
-							if (engine.checkWin() != null) state = GameState.WIN_SCREEN;
+							if (engine.checkWin() != null)
+								state = GameState.WIN_SCREEN;
 						} else {
 							statusMessage = "Cannot build settlement there";
 						}
@@ -720,74 +825,75 @@ public class GUI {
 						if (board.crossroadsAt(clicked).hasCity()) {
 							statusMessage = "City built";
 							selectedBuild = null;
-							if (engine.checkWin() != null) state = GameState.WIN_SCREEN;
+							if (engine.checkWin() != null)
+								state = GameState.WIN_SCREEN;
 						} else {
 							statusMessage = "Cannot build city there";
 						}
 					} else if (selectedBuild == Buildable.ROAD) {
-					    if (firstRoadVertex == -1) {
-					        firstRoadVertex = clicked;
-					        statusMessage = "Click second crossroads to complete road";
-					    } else {
-					        if (!board.areAdjacent(firstRoadVertex, clicked)) {
-					            statusMessage = "Vertices must be adjacent";
-					            firstRoadVertex = -1;
-					            return;
-					        }
-					        engine.buildRoad(firstRoadVertex, clicked);
-					        if (board.getRoadOwner(firstRoadVertex, clicked) != null) {
-					            statusMessage = "Road built";
-					            selectedBuild = null;
-					            firstRoadVertex = -1;
-					            if (engine.checkWin() != null) state = GameState.WIN_SCREEN;
-					        } else {
-					            statusMessage = "Cannot build road there";
-					            firstRoadVertex = -1;
-					        }
-					    }
+						if (firstRoadVertex == -1) {
+							firstRoadVertex = clicked;
+							statusMessage = "Click second crossroads to complete road";
+						} else {
+							if (!board.areAdjacent(firstRoadVertex, clicked)) {
+								statusMessage = "Vertices must be adjacent";
+								firstRoadVertex = -1;
+								return;
+							}
+							engine.buildRoad(firstRoadVertex, clicked);
+							if (board.getRoadOwner(firstRoadVertex, clicked) != null) {
+								statusMessage = "Road built";
+								selectedBuild = null;
+								firstRoadVertex = -1;
+								if (engine.checkWin() != null)
+									state = GameState.WIN_SCREEN;
+							} else {
+								statusMessage = "Cannot build road there";
+								firstRoadVertex = -1;
+							}
+						}
 					}
 					return;
 				} else if (state == GameState.BANK_TRADE) {
-				    ResourceType[] types = ResourceType.values();
-				    
-				    for (int i = 0; i < types.length; i++) {
-				        double btnY = 0.65 - (i * 0.07);
-				        
-				        if (x > 0.28 && x < 0.52 && y > btnY - 0.025 && y < btnY + 0.025) {
-				            bankGive = types[i];
-				            return;
-				        }
-				        if (x > 0.98 && x < 1.22 && y > btnY - 0.025 && y < btnY + 0.025) {
-				            bankReceive = types[i];
-				            return;
-				        }
-				    }
+					ResourceType[] types = ResourceType.values();
 
-				    if (x > 0.02 && x < 0.18 && y > 0.06 && y < 0.14) {
-				        state = GameState.MAIN_GAME;
-				        statusMessage = "";
-				    }
-				    else if (x > 1.32 && x < 1.48 && y > 0.06 && y < 0.14) {
-				        Player current = engine.getCurrentPlayer();
-				        if (bankGive == null || bankReceive == null) {
-				            statusMessage = "Select both give and receive";
-				            return;
-				        }
-				        if (bankGive == bankReceive) {
-				            statusMessage = "Give and receive must be different";
-				            return;
-				        }
-				        if (current.getResource(bankGive) < 4) {
-				            statusMessage = "Need at least 4 " + bankGive + " to trade";
-				            return;
-				        }
-				        current.removeResource(bankGive, 4);
-				        current.addResource(bankReceive, 1);
-				        statusMessage = "Traded 4 " + bankGive + " for 1 " + bankReceive;
-				        state = GameState.MAIN_GAME;
-				        bankGive = null;
-				        bankReceive = null;
-				    }
+					for (int i = 0; i < types.length; i++) {
+						double btnY = 0.65 - (i * 0.07);
+
+						if (x > 0.28 && x < 0.52 && y > btnY - 0.025 && y < btnY + 0.025) {
+							bankGive = types[i];
+							return;
+						}
+						if (x > 0.98 && x < 1.22 && y > btnY - 0.025 && y < btnY + 0.025) {
+							bankReceive = types[i];
+							return;
+						}
+					}
+
+					if (x > 0.02 && x < 0.18 && y > 0.06 && y < 0.14) {
+						state = GameState.MAIN_GAME;
+						statusMessage = "";
+					} else if (x > 1.32 && x < 1.48 && y > 0.06 && y < 0.14) {
+						Player current = engine.getCurrentPlayer();
+						if (bankGive == null || bankReceive == null) {
+							statusMessage = "Select both give and receive";
+							return;
+						}
+						if (bankGive == bankReceive) {
+							statusMessage = "Give and receive must be different";
+							return;
+						}
+						if (current.getResource(bankGive) < 4) {
+							statusMessage = "Need at least 4 " + bankGive + " to trade";
+							return;
+						}
+						current.removeResource(bankGive, 4);
+						current.addResource(bankReceive, 1);
+						statusMessage = "Traded 4 " + bankGive + " for 1 " + bankReceive;
+						state = GameState.MAIN_GAME;
+						bankGive = null;
+						bankReceive = null;
+					}
 				}
 			}
 
@@ -799,8 +905,7 @@ public class GUI {
 				int roll = engine.rollDice();
 				statusMessage = engine.getCurrentPlayer().getName() + " rolled a " + roll;
 				hasRolled = true;
-			}
-			else if (x > 0.04 && x < 0.16 && y > 0.11 && y < 0.17) {
+			} else if (x > 0.04 && x < 0.16 && y > 0.11 && y < 0.17) {
 				if (!hasRolled) {
 					statusMessage = "Roll the dice before ending turn";
 					return;
@@ -810,21 +915,20 @@ public class GUI {
 				selectedBuild = null;
 				firstRoadVertex = -1;
 				statusMessage = engine.getCurrentPlayer().getName() + "'s turn";
-				if (engine.checkWin() != null) state = GameState.WIN_SCREEN;
-			}
-			else if (x > 1.32 && x < 1.48 && y > 0.19 && y < 0.25) {
+				if (engine.checkWin() != null)
+					state = GameState.WIN_SCREEN;
+			} else if (x > 1.32 && x < 1.48 && y > 0.19 && y < 0.25) {
 				if (!hasRolled) {
 					statusMessage = "Roll first before building";
 					return;
 				}
 				state = GameState.BUILDING;
 				statusMessage = "";
-			}
-			else if (x > 1.32 && x < 1.48 && y > 0.11 && y < 0.17) {
-			    state = GameState.BANK_TRADE;
-			    bankGive = null;
-			    bankReceive = null;
-			    statusMessage = "";
+			} else if (x > 1.32 && x < 1.48 && y > 0.11 && y < 0.17) {
+				state = GameState.BANK_TRADE;
+				bankGive = null;
+				bankReceive = null;
+				statusMessage = "";
 			}
 		} else if (state == GameState.BUILDING) {
 			if (x > 0.60 && x < 0.90 && y > 0.555 && y < 0.605) {
@@ -836,8 +940,7 @@ public class GUI {
 				firstRoadVertex = -1;
 				statusMessage = "Click two adjacent crossroads to place road";
 				state = GameState.MAIN_GAME;
-			}
-			else if (x > 0.60 && x < 0.90 && y > 0.495 && y < 0.545) {
+			} else if (x > 0.60 && x < 0.90 && y > 0.495 && y < 0.545) {
 				if (!engine.getCurrentPlayer().canAfford(Buildable.SETTLEMENT)) {
 					statusMessage = "Cannot afford settlement";
 					return;
@@ -845,8 +948,7 @@ public class GUI {
 				selectedBuild = Buildable.SETTLEMENT;
 				statusMessage = "Click a crossroads to place settlement";
 				state = GameState.MAIN_GAME;
-			}
-			else if (x > 0.60 && x < 0.90 && y > 0.435 && y < 0.485) {
+			} else if (x > 0.60 && x < 0.90 && y > 0.435 && y < 0.485) {
 				if (!engine.getCurrentPlayer().canAfford(Buildable.CITY)) {
 					statusMessage = "Cannot afford city";
 					return;
@@ -854,8 +956,7 @@ public class GUI {
 				selectedBuild = Buildable.CITY;
 				statusMessage = "Click your settlement to upgrade to city";
 				state = GameState.MAIN_GAME;
-			}
-			else if (x > 0.69 && x < 0.81 && y > 0.375 && y < 0.425) {
+			} else if (x > 0.69 && x < 0.81 && y > 0.375 && y < 0.425) {
 				state = GameState.MAIN_GAME;
 				selectedBuild = null;
 				statusMessage = "";
@@ -872,55 +973,53 @@ public class GUI {
 				engine = null;
 				board = null;
 				players = null;
-			}
-			else if (x > 0.65 && x < 0.85 && y > 0.13 && y < 0.21) {
+			} else if (x > 0.65 && x < 0.85 && y > 0.13 && y < 0.21) {
 				System.exit(0);
 			}
 		} else if (state == GameState.BANK_TRADE) {
-		    ResourceType[] types = ResourceType.values();
-		    
-		    for (int i = 0; i < types.length; i++) {
-		        double btnY = 0.65 - (i * 0.07);
-		        
-		        if (x > 0.28 && x < 0.52 && y > btnY - 0.025 && y < btnY + 0.025) {
-		            bankGive = types[i];
-		            return;
-		        }
-		        if (x > 0.98 && x < 1.22 && y > btnY - 0.025 && y < btnY + 0.025) {
-		            bankReceive = types[i];
-		            return;
-		        }
-		    }
+			ResourceType[] types = ResourceType.values();
 
-		    if (x > 0.02 && x < 0.18 && y > 0.06 && y < 0.14) {
-		        state = GameState.MAIN_GAME;
-		        statusMessage = "";
-		    }
-		    else if (x > 1.32 && x < 1.48 && y > 0.06 && y < 0.14) {
-		        Player current = engine.getCurrentPlayer();
-		        if (bankGive == null || bankReceive == null) {
-		            statusMessage = "Select both give and receive";
-		            return;
-		        }
-		        if (bankGive == bankReceive) {
-		            statusMessage = "Give and receive must be different";
-		            return;
-		        }
-		        if (current.getResource(bankGive) < 4) {
-		            statusMessage = "Need at least 4 " + bankGive + " to trade";
-		            return;
-		        }
-		        current.removeResource(bankGive, 4);
-		        current.addResource(bankReceive, 1);
-		        statusMessage = "Traded 4 " + bankGive + " for 1 " + bankReceive;
-		        state = GameState.MAIN_GAME;
-		        bankGive = null;
-		        bankReceive = null;
-		    }
+			for (int i = 0; i < types.length; i++) {
+				double btnY = 0.65 - (i * 0.07);
+
+				if (x > 0.28 && x < 0.52 && y > btnY - 0.025 && y < btnY + 0.025) {
+					bankGive = types[i];
+					return;
+				}
+				if (x > 0.98 && x < 1.22 && y > btnY - 0.025 && y < btnY + 0.025) {
+					bankReceive = types[i];
+					return;
+				}
+			}
+
+			if (x > 0.02 && x < 0.18 && y > 0.06 && y < 0.14) {
+				state = GameState.MAIN_GAME;
+				statusMessage = "";
+			} else if (x > 1.32 && x < 1.48 && y > 0.06 && y < 0.14) {
+				Player current = engine.getCurrentPlayer();
+				if (bankGive == null || bankReceive == null) {
+					statusMessage = "Select both give and receive";
+					return;
+				}
+				if (bankGive == bankReceive) {
+					statusMessage = "Give and receive must be different";
+					return;
+				}
+				if (current.getResource(bankGive) < 4) {
+					statusMessage = "Need at least 4 " + bankGive + " to trade";
+					return;
+				}
+				current.removeResource(bankGive, 4);
+				current.addResource(bankReceive, 1);
+				statusMessage = "Traded 4 " + bankGive + " for 1 " + bankReceive;
+				state = GameState.MAIN_GAME;
+				bankGive = null;
+				bankReceive = null;
+			}
 		} else if (state == GameState.RULES) {
-		    if (x > 0.02 && x < 0.18 && y > 0.06 && y < 0.14) {
-		        state = GameState.MAIN_MENU;
-		    }
+			if (x > 0.02 && x < 0.18 && y > 0.06 && y < 0.14) {
+				state = GameState.MAIN_MENU;
+			}
 		}
 	}
 

@@ -1,5 +1,8 @@
 package natac;
-
+/**
+ * only some were implemented due to single person project
+ * constraints
+ */
 public enum GameState {
 	MAIN_MENU, RULES, SETUP_PLAYERS, SETUP_VP, INITIAL_PLACEMENT, MAIN_GAME, BUILD_MENU, CANNON_TARGETING,
 	PLAGUE_TARGETING, CARAVAN_SELECT, BANK_TRADE, WIN_SCREEN, BUILDING
