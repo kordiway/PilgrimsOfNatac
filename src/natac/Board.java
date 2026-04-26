@@ -176,7 +176,7 @@ public class Board {
 	 * @param ind
 	 * @return
 	 */
-	public boolean isValidSettlement(int ind) {
+	public boolean isValidSettlement(int ind, Player player) {
 		if (!crossroads[ind].isEmpty())
 			return false;
 
@@ -185,7 +185,13 @@ public class Board {
 				return false;
 		}
 
-		return true;
+		for(int adj: graph.adj(ind)) {
+			if(getRoadOwner(ind, adj) == player) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	/**
@@ -280,5 +286,30 @@ public class Board {
 				}
 			}
 		}
+	}
+	
+	public boolean isInitialSettlementValid(int ind) {
+	    if (!crossroads[ind].isEmpty()) return false;
+	    for (int adj : graph.adj(ind)) {
+	        if (!crossroads[adj].isEmpty()) return false;
+	    }
+	    return true;
+	}
+
+	public boolean areAdjacent(int v, int w) {
+	    for (int adj : graph.adj(v)) {
+	        if (adj == w) return true;
+	    }
+	    return false;
+	}
+	
+	public void giveStartingResources(int crossroadIndex, Player player) {
+	    for (int t = 0; t < 19; t++) {
+	        for (int c : tileCrossroads[t]) {
+	            if (c == crossroadIndex && tiles[t].getType() != null) {
+	                player.addResource(tiles[t].getType(), 1);
+	            }
+	        }
+	    }
 	}
 }
